@@ -8,6 +8,10 @@ def main():
     print("Starting asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
+
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
@@ -17,11 +21,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        player.update(dt)
-        screen.fill("black")
-        player.draw(screen)
-        pygame.display.flip()
-        
+        for updatables in updatable:
+            updatables.update(dt)
+            screen.fill("black")
+        for drawables in drawable:
+            drawables.draw(screen)
+            pygame.display.flip()
         dt = clock.tick()/1000
 if __name__ == "__main__":
     main()
